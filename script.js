@@ -1,66 +1,27 @@
-let display = document.getElementById("display");
-let currentOperand = "";
-let previousOperand = "";
-let operation = undefined;
+let input = document.getElementById('inputBox');
+let buttons = document.querySelectorAll('button');
 
-function appendNumber(number) {
-  if (number === "." && currentOperand.includes(".")) return;
-  currentOperand = currentOperand.toString() + number.toString();
-  updateDisplay();
-}
+let string = "";
+let arr = Array.from(buttons);
+arr.forEach(button => {
+    button.addEventListener('click', (e) =>{
+        if(e.target.innerHTML == '='){
+            string = eval(string);
+            input.value = string;
+        }
 
-function updateDisplay() {
-  display.innerText = currentOperand;
-}
-
-function chooseOperation(op) {
-  if (currentOperand === "") return;
-  if (previousOperand !== "") {
-    compute();
-  }
-  operation = op;
-  previousOperand = currentOperand;
-  currentOperand = "";
-}
-
-function compute() {
-  let result;
-  const prev = parseFloat(previousOperand);
-  const curr = parseFloat(currentOperand);
-  if (isNaN(prev) || isNaN(curr)) return;
-
-  switch (operation) {
-    case "+":
-      result = prev + curr;
-      break;
-    case "-":
-      result = prev - curr;
-      break;
-    case "*":
-      result = prev * curr;
-      break;
-    case "/":
-      result = prev / curr;
-      break;
-    default:
-      return;
-  }
-  currentOperand = result;
-  operation = undefined;
-  previousOperand = "";
-  updateDisplay();
-}
-
-function clear() {
-  currentOperand = "";
-  previousOperand = "";
-  operation = undefined;
-  updateDisplay();
-}
-clear(); // Clear display when initialized
-
-const themeToggleButton = document.getElementById("theme-toggle");
-
-themeToggleButton.addEventListener("click", () => {
-  document.body.classList.toggle("light-theme");
-});
+        else if(e.target.innerHTML == 'AC'){
+            string = "";
+            input.value = string;
+        }
+        else if(e.target.innerHTML == 'DEL'){
+            string = string.substring(0, string.length-1);
+            input.value = string;
+        }
+        else{
+            string += e.target.innerHTML;
+            input.value = string;
+        }
+        
+    })
+})
